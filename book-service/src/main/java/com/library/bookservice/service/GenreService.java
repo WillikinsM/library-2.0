@@ -1,6 +1,6 @@
 package com.library.bookservice.service;
 
-import com.library.bookservice.config.CustomKeyGenerator;
+
 import com.library.bookservice.dto.GenreDetails;
 import com.library.bookservice.dto.GenreRequest;
 import com.library.bookservice.dto.GenreResponse;
@@ -29,8 +29,6 @@ public class GenreService {
     @Autowired
     private final GenreRepository genreRepository;
     private final int DUPLICATE_ERROR_CODE = 11000;
-    @Autowired
-    private CustomKeyGenerator customKeyGenerator;
 
 
     @CacheEvict(cacheNames = "genres", allEntries = true)

@@ -1,0 +1,41 @@
+# Used if bypassing oc new-app. S2I will generate these automatically!
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book-service
+  labels:
+    app: book-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book-service
+  template:
+    metadata:
+      labels:
+        app: book-service
+    spec:
+      containers:
+      - name: book-service
+        image: book-service:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SERVER_PORT
+          value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book-service
+  labels:
+    app: book-service
+spec:
+  ports:
+  - port: 8080
+    name: http
+    targetPort: 8080
+  selector:
+    app: book-service
+---
+# ... (inventory, order, and email services follow the exact same pattern)

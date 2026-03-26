@@ -1,6 +1,6 @@
 package com.library.bookservice.service;
 
-import com.library.bookservice.config.CustomKeyGenerator;
+
 import com.library.bookservice.dto.AuthorDetails;
 import com.library.bookservice.dto.AuthorRequest;
 import com.library.bookservice.dto.AuthorResponse;
@@ -29,8 +29,6 @@ public class AuthorService {
     @Autowired
     private final AuthorRepository authorRepository;
 
-    @Autowired
-    private CustomKeyGenerator customKeyGenerator;
 
     private final int DUPLICATE_ERROR_CODE = 11000;
 

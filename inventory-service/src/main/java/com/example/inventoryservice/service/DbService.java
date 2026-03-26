@@ -1,7 +1,7 @@
 package com.example.inventoryservice.service;
 
 import com.example.inventoryservice.model.Inventory;
-import com.example.inventoryservice.repository.InventoryRespository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DbService {
 
-    private final InventoryRespository inventoryRespository;
+    // private final InventoryRespository inventoryRespository;
 
     public void InitDb(){
         Inventory inventory1 = new Inventory();

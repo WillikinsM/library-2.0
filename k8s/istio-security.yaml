@@ -1,0 +1,40 @@
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-keycloak
+  namespace: default
+spec:
+  jwtRules:
+  - issuer: "http://keycloak.default.svc.cluster.local:8080/realms/library-realm"
+    jwksUri: "http://keycloak.default.svc.cluster.local:8080/realms/library-realm/protocol/openid-connect/certs"
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt-for-order
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        requestPrincipals: ["*"]
+    when:
+    - key: request.auth.claims[realm_access][roles]
+      values: ["CUSTOMER"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-inventory
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: inventory-service
+  action: ALLOW
+  rules:
+  - {} # Allow inter-service calls or allow all for inventory (internal service)

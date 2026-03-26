@@ -7,7 +7,7 @@ import com.library.bookservice.dto.PublisherUpdate;
 import com.library.bookservice.exceptions.NotFoundException;
 import com.library.bookservice.model.Publisher;
 import com.library.bookservice.repository.PublisherRepository;
-import com.mongodb.MongoWriteException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

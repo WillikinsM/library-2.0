@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionHandlerInventoryService {
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(NotFoundException exception) {
+    public ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
         return ResponseEntity.notFound().build();
     }
 }

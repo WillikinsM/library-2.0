@@ -24,7 +24,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping
-    public ResponseEntity create(@RequestBody @Valid AddressRequest addressRequest, UriComponentsBuilder uriComponentsBuilder) {
+    public ResponseEntity<?> create(@RequestBody @Valid AddressRequest addressRequest, UriComponentsBuilder uriComponentsBuilder) {
         log.info("recebidooo: {}",addressRequest);
         AddressDetails addressDetails = addressService.save(addressRequest);
         URI uri = uriComponentsBuilder.path("/api/address/{id}").buildAndExpand(addressDetails._id()).toUri();
@@ -32,31 +32,31 @@ public class AddressController {
     }
 
     @GetMapping
-    public ResponseEntity findAll() {
+    public ResponseEntity<?> findAll() {
         List<AddressResponse> addressResponseList = addressService.findAll();
         return ResponseEntity.ok().body(addressResponseList);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable String id) {
+    public ResponseEntity<?> delete(@PathVariable String id) {
         addressService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findById(@PathVariable String id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         AddressDetails addressDetails = addressService.findById(id);
         return ResponseEntity.ok().body(addressDetails);
     }
 
     @PutMapping
-    public ResponseEntity udpate(@RequestBody @Valid AddressUpdate addressUpdate) {
+    public ResponseEntity<?> udpate(@RequestBody @Valid AddressUpdate addressUpdate) {
         AddressDetails addressDetails = addressService.update(addressUpdate);
         return ResponseEntity.ok().body(addressDetails);
     }
 
     @GetMapping("/")
-    public ResponseEntity findByuserId(@RequestParam String userId) {
+    public ResponseEntity<?> findByuserId(@RequestParam String userId) {
         log.info("user is : {}",userId);
         List<AddressDetails> addressDetails = addressService.findByUserId(userId);
         return ResponseEntity.ok().body(addressDetails);

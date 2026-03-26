@@ -1,6 +1,6 @@
 package com.library.bookservice.service;
 
-import com.library.bookservice.config.CustomKeyGenerator;
+
 import com.library.bookservice.dto.BookDetails;
 import com.library.bookservice.dto.BookRequest;
 import com.library.bookservice.dto.BookResponse;
@@ -51,8 +51,6 @@ public class BookService {
 
     private final int DUPLICATE_ERROR_CODE = 11000;
 
-    @Autowired
-    private CustomKeyGenerator customKeyGenerator;
 
     @CacheEvict(cacheNames = "books", allEntries = true)
     public BookDetails save(BookRequest bookRequest) {

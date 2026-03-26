@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionHandlerBookService {
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(NotFoundException exception) {
+    public ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseEntity handleDuplicateKeyException(DuplicateKeyException duplicateKeyException) {
+    public ResponseEntity<?> handleDuplicateKeyException(DuplicateKeyException duplicateKeyException) {
         return ResponseEntity.badRequest().body(duplicateKeyException.getMessage());
     }
 

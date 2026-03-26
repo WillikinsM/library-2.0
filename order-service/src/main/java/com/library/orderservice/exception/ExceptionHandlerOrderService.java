@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlerOrderService {
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(NotFoundException exception) {
+    public ResponseEntity<?> handleNotFoundException(NotFoundException exception) {
         return ResponseEntity.notFound().build();
     }
 

@@ -29,11 +29,13 @@ public class Book {
     private String name;
     @DBRef
     @ToString.Exclude
+    @Builder.Default
     private List<Author> authors = new ArrayList<>();
     @NotNull
     private int pages;
     @DBRef
     @ToString.Exclude
+    @Builder.Default
     private List<Genre> genres = new ArrayList<>();
     @NotNull
     private int publicationYear;
