@@ -6,9 +6,8 @@ import com.library.bookservice.dto.BookResponse;
 import com.library.bookservice.dto.BookUpdate;
 import com.library.bookservice.service.BookService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,15 +16,17 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/book")
-@RequiredArgsConstructor
-@Slf4j
 public class BookController {
 
-    @Autowired
+    private static final Logger log = LoggerFactory.getLogger(BookController.class);
+
     private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @PostMapping
     public ResponseEntity<BookDetails> create(@RequestBody @Valid BookRequest bookRequest, UriComponentsBuilder uriComponentsBuilder) {

@@ -15,9 +15,8 @@ import com.library.bookservice.repository.BookRepository;
 import com.library.bookservice.repository.GenreRepository;
 import com.library.bookservice.repository.PublisherRepository;
 import com.mongodb.MongoWriteException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -34,22 +33,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @CacheConfig(cacheNames = {"books"})
 public class BookService {
+
+    private static final Logger log = LoggerFactory.getLogger(BookService.class);
+
     private final PublisherRepository publisherRepository;
-    @Autowired
     private final BookRepository bookRepository;
-    @Autowired
     private final GenreRepository genreRepository;
-    @Autowired
-    private  final AuthorRepository authorRepository;
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
+    private final AuthorRepository authorRepository;
+    private final MongoTemplate mongoTemplate;
     private final int DUPLICATE_ERROR_CODE = 11000;
+
+    public BookService(PublisherRepository publisherRepository, BookRepository bookRepository,
+                       GenreRepository genreRepository, AuthorRepository authorRepository,
+                       MongoTemplate mongoTemplate) {
+        this.publisherRepository = publisherRepository;
+        this.bookRepository = bookRepository;
+        this.genreRepository = genreRepository;
+        this.authorRepository = authorRepository;
+        this.mongoTemplate = mongoTemplate;
+    }
 
 
     @CacheEvict(cacheNames = "books", allEntries = true)

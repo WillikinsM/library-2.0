@@ -9,9 +9,8 @@ import com.library.bookservice.exceptions.NotFoundException;
 import com.library.bookservice.model.Author;
 import com.library.bookservice.repository.AuthorRepository;
 import com.mongodb.MongoWriteException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,14 +20,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @CacheConfig(cacheNames = {"authors"})
 public class AuthorService {
 
-    @Autowired
+    private static final Logger log = LoggerFactory.getLogger(AuthorService.class);
+
     private final AuthorRepository authorRepository;
 
+    public AuthorService(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
 
     private final int DUPLICATE_ERROR_CODE = 11000;
 

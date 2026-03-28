@@ -4,7 +4,6 @@ import com.library.orderservice.dto.OrderDetails;
 import com.library.orderservice.dto.OrderRequest;
 import com.library.orderservice.dto.OrderResponse;
 import com.library.orderservice.service.OrderService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/order")
 public class OrderController {
 
     private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @PostMapping
     public ResponseEntity<OrderDetails> placeOrder(@RequestBody OrderRequest orderRequest){

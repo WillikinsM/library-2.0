@@ -6,8 +6,6 @@ import com.library.bookservice.dto.AuthorResponse;
 import com.library.bookservice.dto.AuthorUpdate;
 import com.library.bookservice.service.AuthorService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,11 +15,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/author")
-@RequiredArgsConstructor
 public class AuthorController {
 
-    @Autowired
     private final AuthorService authorService;
+
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @PostMapping
     public ResponseEntity<AuthorDetails> create(@RequestBody @Valid AuthorRequest authorRequest, UriComponentsBuilder uriComponentsBuilder) {

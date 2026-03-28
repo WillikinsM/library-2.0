@@ -7,18 +7,22 @@ import com.library.orderservice.dto.AddressUpdate;
 import com.library.orderservice.exception.NotFoundException;
 import com.library.orderservice.model.Address;
 import com.library.orderservice.repository.AddressRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class AddressService {
 
+    private static final Logger log = LoggerFactory.getLogger(AddressService.class);
+
     private final AddressRepository addressRepository;
+
+    public AddressService(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
 
     public AddressDetails save(AddressRequest addressRequest) {
         Address address = new Address(addressRequest);

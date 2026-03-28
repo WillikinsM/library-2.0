@@ -10,11 +10,11 @@ import com.library.orderservice.model.Order;
 import com.library.orderservice.model.OrderItems;
 import com.library.orderservice.repository.AddressRepository;
 import com.library.orderservice.repository.OrderRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.client.RestClient;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,14 +22,23 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
-@Slf4j
 public class OrderService {
+
+    private static final Logger log = LoggerFactory.getLogger(OrderService.class);
+
     private final OrderRepository orderRepository;
     private final AddressRepository addressRepository;
     private final OrderItemsService orderItemsService;
-    private final WebClient.Builder webClientbuilder;
+    private final RestClient.Builder restClientBuilder;
+
+    public OrderService(OrderRepository orderRepository, AddressRepository addressRepository,
+                        OrderItemsService orderItemsService, RestClient.Builder restClientBuilder) {
+        this.orderRepository = orderRepository;
+        this.addressRepository = addressRepository;
+        this.orderItemsService = orderItemsService;
+        this.restClientBuilder = restClientBuilder;
+    }
 
     public OrderDetails placeOrder(OrderRequest orderRequest){
         log.info("order, {}", orderRequest);
@@ -48,16 +57,12 @@ public class OrderService {
                 .map(OrderItems::getBookId)
                 .toList();
 
-
-
-
             String bookIdsParam = String.join(",", bookIds);
-            InventoryResponse[] inventoryResponsesArray = webClientbuilder.build().get()
+            InventoryResponse[] inventoryResponsesArray = restClientBuilder.build().get()
                     .uri("http://inventory-service/api/inventory/?bookIds={bookIds}",
                             bookIdsParam)
                     .retrieve()
-                    .bodyToMono(InventoryResponse[].class)
-                    .block();
+                    .body(InventoryResponse[].class);
 
             boolean allProductsinStock = Arrays.stream(inventoryResponsesArray).allMatch(InventoryResponse::isInStock);
             System.out.println(Arrays.toString(inventoryResponsesArray));

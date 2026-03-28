@@ -6,8 +6,8 @@ import com.library.orderservice.dto.AddressResponse;
 import com.library.orderservice.dto.AddressUpdate;
 import com.library.orderservice.service.AddressService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,12 +16,18 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/address")
-@Slf4j
 public class AddressController {
 
+    private static final Logger log = LoggerFactory.getLogger(AddressController.class);
+
     private final AddressService addressService;
+
+    public AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
+
+
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid AddressRequest addressRequest, UriComponentsBuilder uriComponentsBuilder) {

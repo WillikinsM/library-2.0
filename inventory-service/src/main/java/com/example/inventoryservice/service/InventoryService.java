@@ -5,28 +5,30 @@ import com.example.inventoryservice.dto.InventoryResponse;
 import com.example.inventoryservice.exceptions.NotFoundException;
 import com.example.inventoryservice.model.Inventory;
 import com.example.inventoryservice.repository.InventoryRespository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class InventoryService {
+
+    private static final Logger log = LoggerFactory.getLogger(InventoryService.class);
+
     private final InventoryRespository inventoryRespository;
+
+    public InventoryService(InventoryRespository inventoryRespository) {
+        this.inventoryRespository = inventoryRespository;
+    }
 
     @Transactional(readOnly = true)
     public List<InventoryResponse> isInStock(List<String> bookIds){
         return inventoryRespository.findByBookIdIn(bookIds)
                 .stream()
                 .map(inventory ->
-                    InventoryResponse.builder()
-                            .bookId(inventory.getBookId())
-                            .isInStock(inventory.getQuantity() > 0)
-                            .build()
+                    new InventoryResponse(inventory.getBookId(), inventory.getQuantity() > 0)
                 ).toList();
     }
 

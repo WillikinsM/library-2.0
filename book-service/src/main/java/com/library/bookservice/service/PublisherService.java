@@ -8,9 +8,8 @@ import com.library.bookservice.exceptions.NotFoundException;
 import com.library.bookservice.model.Publisher;
 import com.library.bookservice.repository.PublisherRepository;
 import com.mongodb.MongoWriteException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,14 +19,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @CacheConfig(cacheNames = {"publishers"})
-@Slf4j
 public class PublisherService {
 
-    @Autowired
+    private static final Logger log = LoggerFactory.getLogger(PublisherService.class);
+
     private final PublisherRepository publisherRepository;
     private final int DUPLICATE_ERROR_CODE = 11000;
+
+    public PublisherService(PublisherRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
+    }
 
     @CacheEvict(cacheNames = "publishers", allEntries = true)
     public PublisherDetails save(PublisherRequest publisherRequest) {

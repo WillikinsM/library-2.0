@@ -7,8 +7,6 @@ import com.library.bookservice.dto.GenreResponse;
 import com.library.bookservice.dto.GenreUpdate;
 import com.library.bookservice.service.GenreService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,12 +15,14 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/genre")
 public class GenreController {
 
-    @Autowired
     private final GenreService genreService;
+
+    public GenreController(GenreService genreService) {
+        this.genreService = genreService;
+    }
 
     @PostMapping
     public ResponseEntity<GenreDetails> create(@RequestBody @Valid GenreRequest genreRequest, UriComponentsBuilder uriComponentsBuilder) {

@@ -7,8 +7,6 @@ import com.library.bookservice.dto.PublisherResponse;
 import com.library.bookservice.dto.PublisherUpdate;
 import com.library.bookservice.service.PublisherService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,12 +15,14 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/publisher")
 public class PublisherController {
 
-    @Autowired
     private final PublisherService publisherService;
+
+    public PublisherController(PublisherService publisherService) {
+        this.publisherService = publisherService;
+    }
 
     @PostMapping
     public ResponseEntity<PublisherDetails> create(@RequestBody @Valid PublisherRequest publisherRequest, UriComponentsBuilder uriComponentsBuilder) {

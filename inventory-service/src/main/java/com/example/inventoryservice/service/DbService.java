@@ -1,14 +1,11 @@
 package com.example.inventoryservice.service;
 
 import com.example.inventoryservice.model.Inventory;
-
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-
 @Service
-@RequiredArgsConstructor
 public class DbService {
+
 
     // private final InventoryRespository inventoryRespository;
 
