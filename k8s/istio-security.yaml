@@ -2,7 +2,7 @@ apiVersion: security.istio.io/v1beta1
 kind: RequestAuthentication
 metadata:
   name: jwt-keycloak
-  namespace: default
+  namespace: library-project
 spec:
   jwtRules:
   - issuer: "http://keycloak.default.svc.cluster.local:8080/realms/library-realm"
@@ -12,7 +12,7 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: require-jwt-for-order
-  namespace: default
+  namespace: library-project
 spec:
   selector:
     matchLabels:
@@ -30,7 +30,7 @@ apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
   name: allow-inventory
-  namespace: default
+  namespace: library-project
 spec:
   selector:
     matchLabels:

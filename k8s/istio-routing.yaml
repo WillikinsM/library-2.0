@@ -1,67 +1,87 @@
-apiVersion: networking.istio.io/v1alpha3
+apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: library-gateway
-  namespace: default
+  namespace: istio-system
 spec:
-  selector:
-    istio: ingressgateway # use istio default controller
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - "*"
+  gatewayClassName: istio
+  listeners:
+  - name: http
+    hostname: "*.apps.sno-oci.re9r.work.gd"
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
 ---
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
 metadata:
-  name: library-vs
-  namespace: default
+  name: book-route
+  namespace: library-project
 spec:
-  hosts:
-  - "*"
-  gateways:
-  - library-gateway
-  http:
-  - match:
-    - uri:
-        prefix: /api/book
-    - uri:
-        prefix: /api/author
-    - uri:
-        prefix: /api/genre
-    - uri:
-        prefix: /api/publisher
-    route:
-    - destination:
-        host: book-service
-        port:
-          number: 8080
-  - match:
-    - uri:
-        prefix: /api/order
-    - uri:
-        prefix: /api/address
-    route:
-    - destination:
-        host: order-service
-        port:
-          number: 8080
-  - match:
-    - uri:
-        prefix: /api/inventory
-    route:
-    - destination:
-        host: inventory-service
-        port:
-          number: 8080
-  - match:
-    - uri:
-        prefix: /api/email
-    route:
-    - destination:
-        host: email-service
-        port:
-          number: 8080
+  parentRefs:
+  - name: library-gateway
+    namespace: istio-system
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/book
+    backendRefs:
+    - name: book-service
+      port: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: inventory-route
+  namespace: library-project
+spec:
+  parentRefs:
+  - name: library-gateway
+    namespace: istio-system
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/inventory
+    backendRefs:
+    - name: inventory-service
+      port: 8081
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: order-route
+  namespace: library-project
+spec:
+  parentRefs:
+  - name: library-gateway
+    namespace: istio-system
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/order
+    backendRefs:
+    - name: order-service
+      port: 8082
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: email-route
+  namespace: library-project
+spec:
+  parentRefs:
+  - name: library-gateway
+    namespace: istio-system
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/email
+    backendRefs:
+    - name: email-service
+      port: 8083
